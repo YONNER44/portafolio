@@ -13,17 +13,17 @@ import {
   XCircleIcon,
   FolderOpenIcon,
   HomeIcon,
-  ClipboardDocumentListIcon,
   ChartBarIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/outline";
-
+import logo from "../assets/img/logo.jpg";
+import perfil from "../assets/img/perfil.jpg";
 import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
   { name: "Principal", href: "/", icon: HomeIcon },
-  { name: "Tareas", href: "/tareas", icon: ClipboardDocumentListIcon },
   { name: "Proyectos", href: "/proyectos", icon: FolderOpenIcon },
-  { name: "Datos", href: "/datos", icon: ChartBarIcon },
+  { name: "Curriculum", href: "/curriculum", icon: DocumentTextIcon },
 ];
 
 function classNames(...classes) {
@@ -32,7 +32,7 @@ function classNames(...classes) {
 
 export default function Example() {
   const location = useLocation();
-  
+
   return (
     <Disclosure as="nav" className="relative bg-gray-100">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -55,8 +55,8 @@ export default function Example() {
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
               <img
-                alt="Your Company"
-                src="/public/img/logo.jpg"
+                alt="Logo de Yonner"
+                src={logo}
                 className="size-10 rounded-full -outline-offset-1  transition-transform duration-300 hover:scale-110 hidden sm:block"
               />
             </div>
@@ -75,7 +75,7 @@ export default function Example() {
                       to={item.href}
                       className={classNames(
                         isActive
-                          ? "bg-gray-900 text-white"
+                          ? "bg-blue-600 text-white"
                           : "text-gray-700 hover:text-gray-900",
                         "flex items-center rounded-md px-3 py-2 text-sm font-medium  transition-colors"
                       )}
@@ -115,8 +115,8 @@ export default function Example() {
                 <span className="absolute -inset-1.5" />
                 <span className="sr-only">Menu</span>
                 <img
-                  alt=""
-                  src="/public/img/perfil.jpg"
+                  alt="Foto de perfil"
+                  src={perfil}
                   className="size-8 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
                 />
               </MenuButton>
@@ -147,35 +147,55 @@ export default function Example() {
         </div>
       </div>
       {/* Menú mobile */}
-      <DisclosurePanel className="sm:hidden fixed inset-0 z-50 bg-black/30 overflow-hidden touch-none">
-        <div className="bg-white w-64 h-full p-4 shadow-lg flex flex-col">
-          <div className="flex justify-between items-center mb-6 mt-2">
+      <DisclosurePanel className="sm:hidden fixed inset-0 z-50 flex">
+        {/* Barra lateral a la izquierda */}
+        <div className="bg-white w-60 h-full pt-4 shadow-lg flex flex-col">
+          <div className="flex justify-left items-center  mb-6 mt-2 pb-6 px-4 gap-2 border-b border-gray-300">
             <img
-              src="/public/img/logo.jpg"
-              alt="Your Company"
-              className="size-10 rounded-full -outline-offset-1  transition-transform duration-300 hover:scale-110"
+              alt="Logo de Yonner"
+              src={logo}
+              className="size-10 rounded-full transition-transform duration-300 hover:scale-110"
             />
-
-            <DisclosureButton className="p-2 text-gray-600 hover:text-gray-900">
-              <XCircleIcon className="h-6 w-6" />
-            </DisclosureButton>
+            <p className="items-center font-medium text-gray-900 ">
+              {" "}
+              Arca software brand{" "}
+            </p>
           </div>
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className="flex items-center rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 border-b border-gray-300"
-            >
-              {item.icon && (
-                <item.icon
-                  className="h-5 w-5 mr-2 text-gray-500"
-                  aria-hidden="true"
-                />
-              )}
-              {item.name}
-            </Link>
-          ))}
+
+          {navigation.map((item) => {
+            const isActive =
+              location.pathname === item.href ||
+              (item.href !== "/" && location.pathname.startsWith(item.href));
+
+            return (
+              <DisclosureButton
+                key={item.name}
+                as={Link}
+                to={item.href}
+                className={classNames(
+                  isActive
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-700 hover:bg-gray-200 hover:text-gray-900",
+                  "flex items-center  px-3 py-2 text-base font-medium transition-colors"
+                )}
+              >
+                {item.icon && (
+                  <item.icon
+                    className={classNames(
+                      "h-5 w-5 mr-2 transition-colors",
+                      isActive ? "text-white" : "text-gray-500"
+                    )}
+                    aria-hidden="true"
+                  />
+                )}
+                {item.name}
+              </DisclosureButton>
+            );
+          })}
         </div>
+
+        {/* Fondo oscuro: clic fuera cierra el panel */}
+        <DisclosureButton className="flex-1 bg-black/30" />
       </DisclosurePanel>
     </Disclosure>
   );
