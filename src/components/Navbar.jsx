@@ -12,15 +12,18 @@ import {
   BellIcon,
   XCircleIcon,
   FolderOpenIcon,
+  HomeIcon,
+  ClipboardDocumentListIcon,
+  ChartBarIcon,
 } from "@heroicons/react/24/outline";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
-  { name: "Principal", href: "/" },
-  { name: "Tareas", href: "/tareas" },
+  { name: "Principal", href: "/", icon: HomeIcon },
+  { name: "Tareas", href: "/tareas", icon: ClipboardDocumentListIcon },
   { name: "Proyectos", href: "/proyectos", icon: FolderOpenIcon },
-  { name: "Datos", href: "/datos" },
+  { name: "Datos", href: "/datos", icon: ChartBarIcon },
 ];
 
 function classNames(...classes) {
@@ -28,6 +31,8 @@ function classNames(...classes) {
 }
 
 export default function Example() {
+  const location = useLocation();
+  
   return (
     <Disclosure as="nav" className="relative bg-gray-100">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -55,22 +60,41 @@ export default function Example() {
                 className="size-10 rounded-full -outline-offset-1  transition-transform duration-300 hover:scale-110 hidden sm:block"
               />
             </div>
+
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-900 text-white"
-                        : "text-gray-700 hover:text-gray-900",
-                      "rounded-md px-3 py-2 text-sm font-medium"
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+                {navigation.map((item) => {
+                  const isActive =
+                    location.pathname === item.href ||
+                    (item.href !== "/" &&
+                      location.pathname.startsWith(item.href));
+
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={classNames(
+                        isActive
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-700 hover:text-gray-900",
+                        "flex items-center rounded-md px-3 py-2 text-sm font-medium  transition-colors"
+                      )}
+                    >
+                      {item.icon && (
+                        <item.icon
+                          className={classNames(
+                            "h-5 w-5 mr-1 transition-colors",
+                            isActive
+                              ? "text-white"
+                              : "text-gray-800 group-hover:text-gray-900"
+                          )}
+                          aria-hidden="true"
+                        />
+                      )}
+                      {item.name}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -122,29 +146,8 @@ export default function Example() {
           </div>
         </div>
       </div>
-
-      <DisclosurePanel className="sm:hidden">
-        <div className="space-y-1 px-2 pt-2 pb-3">
-          {navigation.map((item) => (
-            <DisclosureButton
-              key={item.name}
-              as="a"
-              href={item.href}
-              aria-current={item.current ? "page" : undefined}
-              className={classNames(
-                item.current
-                  ? "bg-gray-900 text-white"
-                  : "text-gray-700 hover:bg-gray-200 hover:text-gray-900",
-                "block rounded-md px-3 py-2 text-base font-medium"
-              )}
-            >
-              {item.name}
-            </DisclosureButton>
-          ))}
-        </div>
-      </DisclosurePanel>
       {/* Menú mobile */}
-      <DisclosurePanel className="sm:hidden fixed inset-0 z-50 bg-black/30">
+      <DisclosurePanel className="sm:hidden fixed inset-0 z-50 bg-black/30 overflow-hidden touch-none">
         <div className="bg-white w-64 h-full p-4 shadow-lg flex flex-col">
           <div className="flex justify-between items-center mb-6 mt-2">
             <img
