@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import foto from "../assets/img/perfil.jpg";
+import Lottie from "lottie-react";
+import helloAnimation from "../assets/IconJson/Hello.json";
+import { useRef } from "react";
 
 function App() {
+  const helloLottieRef = useRef(null);
   return (
     <>
       <main className="flex flex-col items-center justify-center bg-[#0a0a0a] p-6 pb-24 min-h-screen md:min-h-[calc(100vh-7rem)]">
-
         <div className="bg-[#1f1f1f] rounded-2xl shadow-lg w-full overflow-hidden transition hover:shadow-xl flex flex-col md:flex-row">
           {/* Columna izquierda: Foto */}
           <div className="md:w-1/2 w-full flex items-center justify-center bg-[#181818]">
@@ -17,16 +20,30 @@ function App() {
           </div>
 
           <div className="bg-[#1f1f1f] rounded-2xl shadow-lg p-10  w-full text-center transition hover:shadow-xl">
-            <h1 className="text-4xl sm:text-5xl font-bold text-[#b91b1c] mb-4">
-              Hola, soy <span className="text-gray-200">Yonner</span> 👋
+            <h1 className="text-4xl sm:text-5xl font-bold text-[#b91b1c] mb-4 flex items-center justify-center gap-2">
+              Hola, Me llamo <span className="text-gray-200 ml-2">Yonner</span>
+              <div
+                onMouseEnter={() => helloLottieRef.current?.play()}
+                onMouseLeave={() => helloLottieRef.current?.stop()}
+              >
+                {/* 👇 aquí va la animación */}
+                <Lottie
+                  lottieRef={helloLottieRef}
+                  animationData={helloAnimation}
+                  loop={false}
+                  autoPlay={false}
+                  style={{ width: 40, height: 40 }}
+                />
+              </div>
             </h1>
 
-            <h2 className="text-xl sm:text-2xl text-gray-200 mb-2">
-              Desarrollador <span className="font-semibold">Frontend</span>{" "}
-              enfocado en crear experiencias web modernas y funcionales.
+            <h2 className="text-xl sm:text-xl text-gray-200 mb-2">
+              Soy Desarrollador con dos años de experiencia en{" "}
+              <span className="font-semibold">Frontend</span> enfocado en crear
+              experiencias web modernas y funcionales.
             </h2>
 
-            <p className="text-gray-400 mb-8 leading-relaxed">
+            <p className="text-gray-400 text-lg mb-8 leading-relaxed">
               Me apasiona transformar ideas en interfaces atractivas y
               funcionales usando tecnologías modernas.
               <br />
@@ -58,7 +75,14 @@ function App() {
                 </div>
               </div>
               <br />
-              <strong>Desarrollo móvil:</strong> Flutter y lenguaje Dart.
+              <div className="border border-gray-600/40 rounded-2xl p-6 mt-6 backdrop-blur-sm">
+                <h3 className="text-gray-300 text-lg font-semibold mb-4 text-center md:text-left">
+                  Desarrollo móvil:{" "}
+                  <strong className="text-gray-300">
+                    Flutter y lenguaje Dart.
+                  </strong>
+                </h3>
+              </div>
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
